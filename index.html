@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SSS Mathematics Learning Platform</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --primary: #0066cc;
+      --primary-dark: #004080;
+      --accent: #00aaff;
+      --success: #28a745;
+      --danger: #dc3545;
+      --bg-start: #d0eaff;
+      --bg-mid:   #c8f0e0;
+      --bg-end:   #f9fcff;
+      --text-dark: #1a2b4c;
+      --card-bg: white;
+    }
+
+    body {
+      font-family: 'Poppins', system-ui, sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, var(--bg-start), var(--bg-mid), var(--bg-end));
+      color: var(--text-dark);
+      min-height: 100vh;
+      background-attachment: fixed;
+      transition: all 0.5s ease;
+    }
+
+    body.dark {
+      --primary: #60a5fa;
+      --primary-dark: #3b82f6;
+      --accent: #93c5fd;
+      --success: #4ade80;
+      --danger: #f87171;
+      --bg-start: #0f172a;
+      --bg-mid: #1e293b;
+      --bg-end: #334155;
+      --text-dark: #e2e8f0;
+      --card-bg: #1e293b;
+    }
+
+    header {
+      background: linear-gradient(to right, var(--primary), var(--accent));
+      color: white;
+      padding: 3.5rem 1rem;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+
+    header h1 {
+      font-size: clamp(2.2rem, 5vw, 3rem);
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+
+    .logo {
+      width: 140px;
+      height: 140px;
+      object-fit: contain;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.3);
+      padding: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    nav {
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    body.dark nav {
+      background: rgba(30,41,59,0.97);
+    }
+
+    nav button,
+    #darkToggle {
+      padding: 0.8rem 1.6rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      background: var(--primary);
+      color: white;
+      transition: all 0.3s;
+    }
+
+    nav button:hover,
+    #darkToggle:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .section {
+      display: none;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin: 2rem 0;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+      border: 1px solid rgba(0,102,204,0.06);
+    }
+
+    .card h2 {
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 4px solid var(--accent);
+      display: inline-block;
+    }
+
+    .topics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1.4rem;
+      margin: 2rem 0;
+    }
+
+    .topic {
+      display: block;
+      padding: 1.2rem 1.5rem;
+      border-radius: 14px;
+      background: rgba(0,102,204,0.04);
+      color: var(--primary);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .topic:hover {
+      background: rgba(0,102,204,0.14);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .topic small {
+      display: block;
+      color: #555;
+      font-size: 0.93rem;
+      margin-top: 0.4rem;
+      line-height: 1.45;
+    }
+
+    body.dark .topic small { color: #a0aec0; }
+
+    .motivation, .testimonial {
+      padding: 1.8rem;
+      border-radius: 16px;
+      margin: 2rem 0;
+    }
+
+    .motivation {
+      background: rgba(0,102,204,0.05);
+      border-left: 6px solid var(--primary);
+    }
+
+    .testimonial {
+      background: rgba(0,170,255,0.05);
+      border-left: 6px solid var(--accent);
+    }
+
+    #backToTop {
+      position: fixed;
+      bottom: 35px;
+      right: 35px;
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      font-size: 1.6rem;
+      border: none;
+      cursor: pointer;
+      display: none;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+      z-index: 999;
+    }
+
+    footer {
+      background: linear-gradient(to right, var(--primary), var(--accent));
+      color: white;
+      text-align: center;
+      padding: 2.5rem 1rem;
+      margin-top: 4rem;
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 0 1rem; }
+      .card { padding: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="c:\Users\Administrator\Desktop\Anoter math\ChatGPT Image Feb 24, 2026, 11_02_15 PM.png" alt="Math Logo" class="logo">
+  <h1>Mathematics Learning Platform 📐📏📊</h1>
+  <p>SSS1 • SSS2 • SSS3 (Combined for WAEC, NECO & JAMB Preparation)</p>
+</header>
+
+<nav>
+  <button onclick="showSection('home')">Home</button>
+  <button onclick="showSection('classes')">Classes</button>
+  <!-- <button onclick="showSection('videos')">Videos</button> -->
+  <button onclick="showSection('quiz')">Quiz</button>
+  <button onclick="showSection('login')">Login</button>
+  <button id="darkToggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+</nav>
+
+<div class="container">
+
+  <!-- ================= HOME ================= -->
+  <div id="home" class="section">
+    <div class="card">
+      <h2>Hi Student!</h2>
+      <p style="font-size:1.15rem; line-height:1.7; margin-bottom:2rem;">
+        Welcome to your personal Mathematics learning space!  
+        This platform is built to help SSS1–SSS3 students in Nigeria prepare confidently for WAEC, NECO, and JAMB with clear explanations, quick quizzes, video recommendations, and past question practice.
+      </p>
+
+      <div class="motivation">
+        <strong>Daily Math Tip:</strong> 
+        <span id="dailyTip">Solve at least 5–10 problems every day — consistency beats talent!</span>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1.5rem;">
+        <div class="testimonial">
+          “This platform made Algebra click for me — went from F9 to B3 in mock exams!” — Aisha, SSS3
+        </div>
+        <div class="testimonial">
+          “Love the quick quizzes — keeps me sharp every day.” — Yusuf, SSS2
+        </div>
+      </div>
+
+      <p style="margin-top:2.5rem; font-weight:600; color:var(--primary);">
+        Ready to start? → Click <strong>Classes</strong> or try the <strong>Quick Quiz</strong>!
+      </p>
+    </div>
+  </div>
+
+  <!-- ================= CLASSES ================= -->
+  <div id="classes" class="section">
+    <div class="card">
+      <h2>SSS Mathematics Topics (WAEC/NECO Syllabus)</h2>
+      <p>Click any topic to watch free explanatory videos (YouTube search results). More dedicated lessons coming soon.</p>
+
+      <div class="topics-grid">
+
+        <a href="https://www.youtube.com/results?search_query=waec+number+bases" target="_blank" class="topic">
+          NUMBER BASES
+          <small>Conversion between bases (binary, decimal, etc.) and basic operations — foundational for computer-related questions</small>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=waec+fractions+decimals+percentages" target="_blank" class="topic">
+          FRACTIONS, DECIMALS & PERCENTAGES
+          <small>Operations, conversions, percentages in real-life problems — appears in almost every exam section</small>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=waec+approximation+and+errors" target="_blank" class="topic">
+          APPROXIMATION AND ERRORS
+          <small>Rounding rules, significant figures, absolute/relative errors — important for calculations</small>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=waec+indices+logarithms+standard+form" target="_blank" class="topic">
+          INDICES, LOGARITHMS & STANDARD FORM
+          <small>Laws of indices & logs, calculations using tables, expressing numbers in standard/scientific notation</small>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=waec+algebra" target="_blank" class="topic">
+          ALGEBRA
+          <small>Linear/quadratic equations, factorization, inequalities, simultaneous equations, word problems</small>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=waec+surds" target="_blank" class="topic">
+          SURD
+          <small>Simplification, rationalization, operations with surds — frequent in algebra & geometry</small>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=waec+permutation+and+combination" target="_blank" class="topic">
+          PERMUTATION AND COMBINATION
+          <small>Arrangements & selections — key foundation for probability questions</small>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=waec+probability" target="_blank" class="topic">
+          PROBABILITY
+          <small>Basic rules, independent/dependent events, tree diagrams, conditional probability</small>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=waec+matrices" target="_blank" class="topic">
+          MATRICES
+          <small>Operations (add, subtract, multiply), determinants, inverses (2×2 & 3×3), solving equations</small>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=waec+integration" target="_blank" class="topic">
+          INTEGRATION
+          <small>Basic rules, indefinite & definite integrals, area under curves — advanced SSS3 topic</small>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=waec+differentiation" target="_blank" class="topic">
+          DIFFERENTIATION
+          <small>Rules (power, product, quotient, chain), gradients, rates of change, maxima/minima</small>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=waec+trigonometry" target="_blank" class="topic">
+          TRIGONOMETRY
+          <small>Sine, cosine, tangent ratios, identities, angles of elevation/depression, bearings</small>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=waec+circle+geometry" target="_blank" class="topic">
+          CIRCLE GEOMETRY
+          <small>Theorems (angle at center, alternate segment, cyclic quadrilaterals) — high-scoring area</small>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=waec+sets" target="_blank" class="topic">
+          SETS
+          <small>Operations (union, intersection, complement), Venn diagrams (up to 3 sets), applications</small>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=waec+modular+arithmetics" target="_blank" class="topic">
+          MODULAR ARITHMETICS
+          <small>Concept of modulo, addition/subtraction/multiplication in mod — used in divisibility & clocks</small>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=waec+arithmetic+and+geometric+progression" target="_blank" class="topic">
+          ARITHMETIC AND GEOMETRIC PROGRESSION
+          <small>nth term, sum of AP & GP, infinite series — common in sequences</small>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=waec+latitude+and+longitude" target="_blank" class="topic">
+          LATITUDE AND LONGITUDE
+          <small>Earth's coordinates, distance between points on globe — navigation topic</small>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=waec+bearing+and+distance" target="_blank" class="topic">
+          BEARING AND DISTANCE
+          <small>Three-figure bearings, scale drawing, locus problems — practical geometry</small>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=waec+mapping+and+function" target="_blank" class="topic">
+          MAPPING AND FUNCTION
+          <small>Domain, range, types of functions (one-to-one, onto), graphs — algebraic foundation</small>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=waec+arithmetics+of+finance" target="_blank" class="topic">
+          ARITHMETICS OF FINANCE
+          <small>Simple/compound interest, depreciation, annuities, profit/loss — real-life applications</small>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=waec+statistics" target="_blank" class="topic">
+          STATISTICS
+          <small>Mean, median, mode, range, cumulative frequency, histograms, pie charts</small>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=waec+mensuration" target="_blank" class="topic">
+          MENSURATION
+          <small>Areas & volumes (triangles, circles, cylinders, cones, spheres) — geometry calculations</small>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=waec+mathematics+past+questions" target="_blank" class="topic">
+          PAST QUESTIONS
+          <small>Practice real WAEC/NECO questions from previous years — exam simulation</small>
+        </a>
+
+        <a href="https://www.youtube.com/results?search_query=waec+mathematics+past+questions+solutions" target="_blank" class="topic">
+          ANSWERS TO PAST QUESTIONS
+          <small>Detailed solutions & explanations for common mistakes — learn from real exams</small>
+        </a>
+
+      </div>
+
+      <div class="motivation" style="margin-top:3rem;">
+        These topics cover the full SSS1–SSS3 WAEC/NECO syllabus. Practice consistently — you're building skills for life!
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= QUIZ ================= -->
+  <div id="quiz" class="section">
+    <div class="card">
+      <h2>Quick Quiz – Test Yourself</h2>
+      <p>Try these questions. Your score appears after you finish.</p>
+
+      <!-- Add your full quiz questions here (example starter) -->
+      <p>1. Solve: 2x + 4 = 10</p>
+      <button onclick="checkAnswer(1)">x = 3</button>
+      <button onclick="checkAnswer(2)">x = 5</button>
+      <p id="result" style="margin-top:1.5rem; font-weight:bold; font-size:1.3rem;"></p>
+    </div>
+  </div>
+
+  <!-- ================= LOGIN ================= -->
+  <div id="login" class="section">
+    <div class="card">
+      <h2>Student Login (Demo)</h2>
+      <p>Sign in to track your progress (full version coming soon).</p>
+      <input type="text" placeholder="Username" style="display:block; width:100%; margin:0.8rem 0; padding:0.9rem; border-radius:8px; border:1px solid #ccc;"/>
+      <input type="password" placeholder="Password" style="display:block; width:100%; margin:0.8rem 0; padding:0.9rem; border-radius:8px; border:1px solid #ccc;"/>
+      <button class="btn btn-success" onclick="alert('Demo login successful! Features coming soon.')">Login</button>
+    </div>
+  </div>
+
+</div>
+
+<button id="backToTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</button>
+
+<footer>
+  © <script>document.write(new Date().getFullYear())</script> Mathematics Learning Platform<br>
+  <small>Helping SSS students across Nigeria excel in Mathematics</small>
+</footer>
+
+<script>
+  // Show section
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(el => el.style.display = 'none');
+    document.getElementById(id).style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Simple quiz example (expand as needed)
+  function checkAnswer(choice) {
+    const result = document.getElementById('result');
+    if (choice === 2) {
+      result.textContent = '❌ Try again!';
+      result.style.color = 'var(--danger)';
+    } else {
+      result.textContent = '✅ Correct! Well done.';
+      result.style.color = 'var(--success)';
+    }
+  }
+
+  // Dark mode
+  function toggleDarkMode() {
+    document.body.classList.toggle('dark');
+    const btn = document.getElementById('darkToggle');
+    btn.textContent = document.body.classList.contains('dark') ? '☀️ Light Mode' : '🌙 Dark Mode';
+  }
+
+  // Daily tip
+  const tips = [
+    "Solve at least 5–10 problems every day — consistency beats talent!",
+    "Master basics first: fractions, decimals & algebra are everywhere.",
+    "Practice past questions — patterns repeat in WAEC & NECO!",
+    "Draw diagrams for bearing, geometry & mensuration questions.",
+    "Use YouTube when stuck — visual explanations help a lot!"
+  ];
+
+  document.getElementById('dailyTip').textContent = tips[Math.floor(Math.random() * tips.length)];
+
+  // Back to top
+  window.addEventListener('scroll', () => {
+    document.getElementById('backToTop').style.display = 
+      (window.scrollY > 400) ? 'block' : 'none';
+  });
+
+  showSection('home');
+</script>
+
+</body>
+</html>
